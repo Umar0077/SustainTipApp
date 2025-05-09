@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_new_sustain_app/screens/Login%20and%20Signup/SignIn.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -15,7 +16,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     {
       'title': 'Welcome to SustainTip',
       'description': 'Join us in making the world greener by adopting eco-friendly habits. Discover daily tips for sustainable living.',
-      'image': '🌱' // You can replace with actual image
+      'image': '🌱' // You can replace with an actual image if you want
     },
     {
       'title': 'Daily Eco Tips',
@@ -48,6 +49,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   title: onboardingPages[index]['title']!,
                   description: onboardingPages[index]['description']!,
                   image: onboardingPages[index]['image']!,
+                  isLastPage: index == onboardingPages.length - 1,
                 );
               },
             ),
@@ -85,12 +87,14 @@ class OnboardingPage extends StatelessWidget {
   final String title;
   final String description;
   final String image;
+  final bool isLastPage;
 
   const OnboardingPage({
     super.key,
     required this.title,
     required this.description,
     required this.image,
+    required this.isLastPage,
   });
 
   @override
@@ -124,8 +128,31 @@ class OnboardingPage extends StatelessWidget {
             ),
             textAlign: TextAlign.center,
           ),
+          if (isLastPage) ...[
+            const SizedBox(height: 40),
+            Container(
+              margin: const EdgeInsets.only(top: 20),
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Signin()),
+                  );
+                },
+                child: const Text('Get Started'),
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                  backgroundColor: Colors.green,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );
   }
 }
+
