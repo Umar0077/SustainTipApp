@@ -1,7 +1,7 @@
-import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
-import 'OnboardingScreen.dart'; // Make sure this file exists
+import 'package:my_new_sustain_app/screens/Homepages/Select_Screen.dart';
+import 'package:my_new_sustain_app/screens/Starting%20Screens/OnboardingScreen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -14,41 +14,55 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 3), () {
+    navigateUser(); // Check user login status
+  }
+
+  void navigateUser() async {
+    await Future.delayed(const Duration(seconds: 3)); // Splash screen delay
+
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      // If user is signed in ➔ go to HomePage
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const SelectScreen()),
+      );
+    } else {
+      // If user is NOT signed in ➔ go to Onboarding Screen
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const OnboardingScreen()),
       );
-    });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white, // White background
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            // App Logo
-            Image.asset(
-              'assets/images/sustainlogo.png', // Update this path as per your project
-              height: 250, // Adjust height as needed
-            ),
-            const SizedBox(height: 20),
-            // App Name
-            const Text(
-              'SustainTip',
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF228B22), // A green color similar to your image
-                fontFamily: 'YourFontFamily', // Optional: set a custom font if needed
-              ),
-            ),
-          ],
+  backgroundColor: Colors.white, // Set the background color to white
+  body: Center(
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Image.asset(
+          'assets/images/sustainlogo.png', // Ensure this path is correct
+          width: 150,  // Increase width
+          height: 150, // Increase height
         ),
-      ),
-    );
+        const SizedBox(height: 20),
+        const Text(
+          'SustainTip',
+          style: TextStyle(
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+            color: Colors.green,
+          ),
+        ),
+      ],
+    ),
+  ),
+);
+
   }
 }
