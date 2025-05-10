@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_new_sustain_app/screens/Login%20and%20Signup/SignIn.dart';
+import 'package:my_new_sustain_app/screens/Main%20Screens/main_page.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
@@ -33,6 +33,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: Column(
         children: [
           Expanded(
@@ -111,10 +112,10 @@ class OnboardingPage extends StatelessWidget {
           const SizedBox(height: 40),
           Text(
             title,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
-              color: Colors.green,
+              color: Colors.green,  // Use global green color
             ),
             textAlign: TextAlign.center,
           ),
@@ -136,13 +137,13 @@ class OnboardingPage extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => const Signin()),
+                    MaterialPageRoute(builder: (context) => const MainPage()),
                   );
                 },
                 child: const Text('Get Started'),
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                  backgroundColor: Colors.green,
+                  backgroundColor: Colors.green,  // Use global green color
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
@@ -155,4 +156,3 @@ class OnboardingPage extends StatelessWidget {
     );
   }
 }
-
