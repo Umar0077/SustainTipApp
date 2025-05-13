@@ -1,0 +1,107 @@
+import 'package:flutter/material.dart';
+import 'package:my_new_sustain_app/screens/Homepages/home_page.dart';
+
+class ChatbotScreen extends StatefulWidget {
+  final Function(String message)? onSendMessage;
+
+  const ChatbotScreen({super.key, this.onSendMessage});
+
+  @override
+  State<ChatbotScreen> createState() => _ChatbotScreenState();
+}
+
+class _ChatbotScreenState extends State<ChatbotScreen> {
+  final TextEditingController _controller = TextEditingController();
+  final List<String> messages = [];
+
+  void sendMessage() {
+    final text = _controller.text.trim();
+    if (text.isNotEmpty) {
+      setState(() {
+        messages.add("You: $text");
+      });
+
+      widget.onSendMessage?.call(text);
+      _controller.clear();
+
+      // Simulated AI response placeholder
+      Future.delayed(const Duration(milliseconds: 800), () {
+        setState(() {
+          messages.add("Gemini: (AI will respond here)");
+        });
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text(
+          "Your Daily Routine",
+          style: TextStyle(color: Colors.black),
+        ),
+        centerTitle: true,
+        backgroundColor: Colors.white,
+        elevation: 0,
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                padding: const EdgeInsets.all(16),
+                itemCount: messages.length,
+                itemBuilder: (context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 4.0),
+                    child: Text(messages[index]),
+                  );
+                },
+              ),
+            ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _controller,
+                      decoration: InputDecoration(
+                        hintText: "Write your answer",
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 12),
+                        filled: true,
+                        fillColor: Colors.grey.shade100,
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  IconButton(
+                    icon: const Icon(Icons.send),
+                    onPressed: () {
+                      // API logic or navigation here
+                      sendMessage(); // This sends the message
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HomePage(),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
