@@ -1,0 +1,154 @@
+import 'package:flutter/material.dart';
+import 'package:my_new_sustain_app/screens/Homepages/Profile_Screen.dart';
+
+class GreenTip {
+  final String category;
+  final String title;
+  final String description;
+  bool isSelected;
+
+  GreenTip({
+    required this.category,
+    required this.title,
+    required this.description,
+    this.isSelected = false,
+  });
+}
+
+class GreentipsScreen extends StatefulWidget {
+  const GreentipsScreen({super.key});
+
+  @override
+  State<GreentipsScreen> createState() => _GreentipsScreenState();
+}
+
+class _GreentipsScreenState extends State<GreentipsScreen> {
+  List<GreenTip> selectedTips = [
+    GreenTip(
+      category: 'Home',
+      title: 'Reduce Water Usage',
+      description: 'Take shorter showers and fix leaks to save water.',
+    ),
+    GreenTip(
+      category: 'Travel',
+      title: 'Use Public Transport',
+      description: 'Opt for buses or trains to reduce carbon footprint.',
+    ),
+    GreenTip(
+      category: 'Food',
+      title: 'Eat Local Produce',
+      description: 'Support local farmers and reduce food miles.',
+    ),
+    GreenTip(
+      category: 'Home',
+      title: 'Switch to LED Bulbs',
+      description: 'Use energy-efficient lighting to save electricity.',
+    ),
+  ];
+
+  Color _getCategoryColor(String category) {
+    switch (category.toLowerCase()) {
+      case 'home':
+        return Colors.green.shade600;
+      case 'travel':
+        return Colors.blue.shade600;
+      case 'food':
+        return Colors.red.shade400;
+      default:
+        return Colors.grey;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Text('Choose Your Green Actions',
+            style: TextStyle(color: Colors.black)),
+        backgroundColor: Colors.white,
+        elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings, color: Colors.black),
+            onPressed: () {},
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: ListView.builder(
+                itemCount: selectedTips.length,
+                itemBuilder: (context, index) {
+                  final tip = selectedTips[index];
+                  return Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    elevation: 3,
+                    margin: const EdgeInsets.symmetric(vertical: 8),
+                    child: ListTile(
+                      leading: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 6, vertical: 2),
+                        decoration: BoxDecoration(
+                          color:
+                              _getCategoryColor(tip.category).withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(
+                          "#${tip.category}",
+                          style: TextStyle(
+                            color: _getCategoryColor(tip.category),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      title: Text(tip.title,
+                          style: const TextStyle(fontWeight: FontWeight.bold)),
+                      subtitle: Text(tip.description),
+                      trailing: Checkbox(
+                        value: tip.isSelected,
+                        onChanged: (value) {
+                          setState(() => tip.isSelected = value ?? false);
+                        },
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfileScreen(
+                      selectedTips: selectedTips,
+                    ),
+                  ),
+                );
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(24),
+                ),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 14, horizontal: 32),
+              ),
+              child:
+                  const Text('Track My Tips ➜', style: TextStyle(fontSize: 16)),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
